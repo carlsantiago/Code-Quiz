@@ -3,17 +3,33 @@ var guideEl = document.getElementById('guide')
 var quizEl = document.getElementById('quiz')
 var continueButton = document.getElementById('continue')
 var exitButton = document.getElementById('exit')
-var nextBtn = document.getElementById('next')
 var questionEl = document.getElementById('question')
 var answersEl = document.getElementById('answerList')
 var timerEl = document.getElementById('time')
+var resultEl = document.getElementById('result')
+var pointsEl = document.getElementById('points')
+var user = document.querySelector("#user");
+var submitButton = document.getElementById('submit');
+var playAgain = document.getElementById('playAgain');
+var viewHighscore = document.getElementById('viewHighscore');
+
 var currentQuestion;
 var randomQuestion;
 var timerCount = 75;
+var score = 0;
 
 startButton.addEventListener('click', guide)
 continueButton.addEventListener('click', startGame)
 exitButton.addEventListener('click', exit)
+submitButton.addEventListener('click', saveResult)
+playAgain.addEventListener('click', restart)
+
+function restart(){
+    resultEl.classList.add('hide');
+
+    timerCount = 75;
+    guide();
+}
 
 function guide() {
     startButton.classList.add('hide');
@@ -26,12 +42,17 @@ function startGame() {
     randomQuestion = questions.sort(() => Math.random() - .5)
     currentQuestion = 0;
     randomizeQuestion();
+    timer();
+}
 
+function timer(){
     var timer = setInterval(function() {
         timerCount--;
         timerEl.textContent = timerCount;
-        if (timerCount === 0) {
+        if (timerCount <= 0) {
             clearInterval(timer);
+            showResult();
+         
         }
     }, 1000);
 }
@@ -46,38 +67,51 @@ function setQuestion(question) {
 
         for (let i = 0; i<4;i++) {
             var button = document.createElement('button');
-            var answer = questions[0].answers[i];
+            var answer = questions[currentQuestion].answers[i];
             button.innerText= answer.text;
             button.classList.add('btn');
-            answersEl.appendChild(button);
-            
+            answersEl.appendChild(button);          
             if (answer.correct) {
                 button.dataset.correct = answer.correct;
             }
-
-        button.addEventListener('click', selectAnswer);
+            button.addEventListener('click', selectAnswer);
         }
+    
+
+ }
+
+
+function selectAnswer(e) {
+
+        var userAnswer = e.target
+        var correct = userAnswer.dataset.correct
+        setStatus(document.body,  correct);
+        currentQuestion++;
+
+        if (correct){
+            score++;
+        }
+
+        if (correct === undefined){
+            timerCount = timerCount - 15;
+        }
+        if (randomQuestion.length > currentQuestion){
+            randomizeQuestion();
+        }else {
+            showResult();
+
+        }
+
     }
 
-
-    function clearAnswers() {
-        nextBtn.classList.add('hide')
+function clearAnswers() {
         while (answersEl.firstChild) {
             answersEl.removeChild(answersEl.firstChild)
         }
     }
 
 
-    function selectAnswer(e,) {
-
-        var userAnswer = e.target
-        var correct = userAnswer.dataset.correct
-        setStatus(document.body, correct);
-        console.log(userAnswer)
-
-    }
-
-    function setStatus(element, correct) {
+function setStatus(element, correct) {
         clearStatus(element)
         if (correct) {
             element.classList.add('correct');
@@ -86,10 +120,28 @@ function setQuestion(question) {
         }
     }
     
-    function clearStatus(element) {
+
+function clearStatus(element) {
         element.classList.remove('correct')
         element.classList.remove('wrong')
     }
+
+function showResult() {
+
+    quizEl.classList.add('hide');
+    resultEl.classList.remove('hide');
+    pointsEl.innerText = 'Your final score is ' + score;
+
+}
+
+function saveResult(){
+    var player = {
+        name: user.value,
+        score: score
+    }
+
+    localStorage.setItem("user",JSON.stringify(player));
+}
 var questions = [
     {
         question: 'How do you create a function in JavaScript?',
@@ -148,9 +200,9 @@ var questions = [
     {
         question: 'How does a FOR loop start?',
         answers: [
-            {text: 'for (i=0;i<=5;i++)', correct: false},
+            {text: 'for (i=0;i<=5;i++)', correct: true},
             {text: 'for i = 1 to 5', correct: false},
-            {text: 'for (i=0;i<=5)', correct: true},
+            {text: 'for (i=0;i<=5)', correct: false},
             {text: 'for (i <=5;i++)', correct: false}
         ]
     },
