@@ -26,9 +26,9 @@ quit.addEventListener('click', exit)
 submitButton.addEventListener('click', saveResult)
 playAgain.addEventListener('click', restart)
 
-viewHighscore.addEventListener('click', function(){
-    window.location.href = "highscores.html"
-});
+// viewHighscore.addEventListener('click', function(){
+//     window.location.href = "highscores.html"
+// });
 
 
 function restart(){
