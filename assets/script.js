@@ -12,6 +12,7 @@ var user = document.querySelector("#user");
 var submitButton = document.getElementById('submit');
 var playAgain = document.getElementById('playAgain');
 var viewHighscore = document.getElementById('viewHighscore');
+var quit = document.getElementById('quit');
 
 var currentQuestion;
 var randomQuestion;
@@ -21,12 +22,18 @@ var score = 0;
 startButton.addEventListener('click', guide)
 continueButton.addEventListener('click', startGame)
 exitButton.addEventListener('click', exit)
+quit.addEventListener('click', exit)
 submitButton.addEventListener('click', saveResult)
 playAgain.addEventListener('click', restart)
 
+viewHighscore.addEventListener('click', function(){
+    window.location.href = "../highscores.html"
+});
+
+
 function restart(){
     resultEl.classList.add('hide');
-
+    score = 0;
     timerCount = 75;
     guide();
 }
@@ -76,8 +83,6 @@ function setQuestion(question) {
             }
             button.addEventListener('click', selectAnswer);
         }
-    
-
  }
 
 
@@ -91,7 +96,6 @@ function selectAnswer(e) {
         if (correct){
             score++;
         }
-
         if (correct === undefined){
             timerCount = timerCount - 15;
         }
@@ -99,9 +103,7 @@ function selectAnswer(e) {
             randomizeQuestion();
         }else {
             showResult();
-
         }
-
     }
 
 function clearAnswers() {
@@ -131,17 +133,22 @@ function showResult() {
     quizEl.classList.add('hide');
     resultEl.classList.remove('hide');
     pointsEl.innerText = 'Your final score is ' + score;
-
 }
+
+var playersArray = [];
 
 function saveResult(){
     var player = {
-        name: user.value,
-        score: score
+        score: score,
+        name: user.value    
     }
 
-    localStorage.setItem("user",JSON.stringify(player));
+    playersArray.push(player)
+
+    localStorage.setItem("user",JSON.stringify(playersArray));
 }
+
+
 var questions = [
     {
         question: 'How do you create a function in JavaScript?',
