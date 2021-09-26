@@ -24,6 +24,7 @@ body {
   width: 100vw;
   height: 100vh;
   background-color: hsl(var(--hue), 29%, 41%);
+  overflow: hidden;
 }
 
 body.correct {
@@ -36,7 +37,7 @@ body.wrong {
 
 #container {
   height: auto;
-  width: 800px;
+  width: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -116,7 +117,6 @@ body.wrong {
 }
 
 #quiz {
-  /* display: block; */
   height: 480px;
   position: relative;
 }
@@ -172,7 +172,7 @@ body.wrong {
   border-radius: 15px 7px;
   margin: 2px 0 0 27px;
 }
-/*Quiz Questions*/
+
 #quiz #question-container {
   position: absolute;
   margin-top: 70px;
@@ -185,7 +185,6 @@ body.wrong {
   height: auto;
 }
 
-/*Quiz Options*/
 #quiz #answerList {
   height: 400px;
   width: 100%;

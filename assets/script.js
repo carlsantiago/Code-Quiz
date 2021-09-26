@@ -26,10 +26,6 @@ quit.addEventListener('click', exit)
 submitButton.addEventListener('click', saveResult)
 playAgain.addEventListener('click', restart)
 
-// viewHighscore.addEventListener('click', function(){
-//     window.location.href = "highscores.html"
-// });
-
 
 function restart(){
     resultEl.classList.add('hide');
@@ -86,9 +82,9 @@ function setQuestion(question) {
  }
 
 
-function selectAnswer(e) {
+function selectAnswer(x) {
 
-        var userAnswer = e.target
+        var userAnswer = x.target
         var correct = userAnswer.dataset.correct
         setStatus(document.body,  correct);
         currentQuestion++;
@@ -107,6 +103,7 @@ function selectAnswer(e) {
     }
 
 function clearAnswers() {
+
         while (answersEl.firstChild) {
             answersEl.removeChild(answersEl.firstChild)
         }
@@ -114,7 +111,9 @@ function clearAnswers() {
 
 
 function setStatus(element, correct) {
+
         clearStatus(element)
+
         if (correct) {
             element.classList.add('correct');
         } else {
@@ -124,6 +123,7 @@ function setStatus(element, correct) {
     
 
 function clearStatus(element) {
+
         element.classList.remove('correct')
         element.classList.remove('wrong')
     }
@@ -133,20 +133,22 @@ function showResult() {
     quizEl.classList.add('hide');
     resultEl.classList.remove('hide');
     pointsEl.innerText = 'Your final score is ' + score;
+
 }
 
 var playersArray = [];
 
 function saveResult(){
-    var player = {
+    
+        var player = {
         score: score,
         name: user.value    
     }
 
     playersArray.push(player)
-
     localStorage.setItem("user",JSON.stringify(playersArray));
 }
+
 
 
 var questions = [
