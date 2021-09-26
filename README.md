@@ -18,7 +18,7 @@
 
 ## Sample of the app
 
-![Sample](./assets/quiz.gif)
+![Sample](./assets/Quiz.gif)
 
 <br/>
 
